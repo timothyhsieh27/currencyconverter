@@ -2,11 +2,11 @@ class DifferentCurrencyCodeError < StandardError
 end
 
 class Currency
-  attr_reader :amount, :currency_code
+  attr_accessor :amount, :code
 
   def initialize(amount, code)
-    @amount = amount.to_f
-    @code = code.upcase
+    @amount = amount
+    @code = code
   end
 
   def ==(other)
@@ -21,7 +21,7 @@ class Currency
     if @code == other.code
       Currency.new(@amount + other.amount, @code)
     else
-      raise DifferentCurrencyCodeError, "Currency codes do not match!"
+      raise DifferentCurrencyCodeError, "wrong currency types"
     end
   end
 
@@ -29,16 +29,10 @@ class Currency
     if @code == other.code
       Currency.new(@amount - other.amount, @code)
     else
-      raise DifferentCurrencyCodeError, "Currency codes do not match!"
+      raise DifferentCurrencyCodeError, "wrong currency types"
     end
   end
-
-  def *(other)
-    if @code == other.code
-      Currency.new(@amount * other.amount, @code)
-    else
-      raise DifferentCurrencyCodeError, "Currency codes do not match!"
-    end
-  end
-
 end
+
+one_dollar = Currency.new(1, 'USD')
+two_dollar = Currency.new(2, 'USD')
