@@ -5,8 +5,8 @@ class Currency
   attr_reader :amount, :currency_code
 
   def initialize(amount, code)
-    @amount = amount
-    @code = code
+    @amount = amount.to_f
+    @code = code.upcase
   end
 
   def ==(other)
@@ -36,14 +36,6 @@ class Currency
   def *(other)
     if @code == other.code
       Currency.new(@amount * other.amount, @code)
-    else
-      raise DifferentCurrencyCodeError, "Currency codes do not match!"
-    end
-  end
-
-  def /(other)
-    if @code == other.code
-      Currency.new(@amount / other.amount, @code)
     else
       raise DifferentCurrencyCodeError, "Currency codes do not match!"
     end
