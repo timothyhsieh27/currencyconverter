@@ -5,7 +5,7 @@ class Currency
   attr_accessor :amount, :code
 
   def initialize(amount, code)
-    @amount = amount
+    @amount = amount.to_f
     @code = code
   end
 
@@ -32,6 +32,15 @@ class Currency
       raise DifferentCurrencyCodeError, "wrong currency types"
     end
   end
+
+  def *(other)
+    if @code == other.code
+      Currency.new(@amount * other.amount, @code)
+    else
+      raise DifferentCurrencyCodeError, "wrong currency types"
+    end
+  end
+
 end
 
 one_dollar = Currency.new(1, 'USD')
