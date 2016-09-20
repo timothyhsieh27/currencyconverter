@@ -1,6 +1,9 @@
 class DifferentCurrencyCodeError < StandardError
 end
 
+class UnrecognizedCurrencyError < StandardError
+end
+
 class Currency
   attr_accessor :amount, :code
 
@@ -21,7 +24,7 @@ class Currency
     if @code == other.code
       Currency.new(@amount + other.amount, @code)
     else
-      raise DifferentCurrencyCodeError, "wrong currency types"
+      raise DifferentCurrencyCodeError, "Currency codes do not match."
     end
   end
 
@@ -29,7 +32,7 @@ class Currency
     if @code == other.code
       Currency.new(@amount - other.amount, @code)
     else
-      raise DifferentCurrencyCodeError, "wrong currency types"
+      raise DifferentCurrencyCodeError, "Currency codes do not match."
     end
   end
 
@@ -37,10 +40,24 @@ class Currency
     if @code == other.code
       Currency.new(@amount * other.amount, @code)
     else
-      raise DifferentCurrencyCodeError, "wrong currency types"
+      raise DifferentCurrencyCodeError, "Currency codes do not match."
     end
   end
 
+  def choose_code(amount) #
+      if @amount[0] == '$'
+        @code = 'USD'
+        @amount = amount[1..-1].to_f
+      elsif amount[0] == '€'
+        @code = 'EUR'
+        @amount = amount[1..-1].to_f
+      elsif amount[0] == '¥'
+        @code = 'JPY'
+        @amount = amount[1..-1].to_f
+      else
+        raise UnrecognizedCurrencyError, "Invalid input. Please reenter data."
+    end
+  end
 end
 
 one_dollar = Currency.new(1, 'USD')
