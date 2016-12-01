@@ -1,9 +1,3 @@
-class DifferentCurrencyCodeError < StandardError
-end
-
-class UnrecognizedCurrencyError < StandardError
-end
-
 class Currency
   attr_accessor :amount, :code
 
@@ -44,7 +38,7 @@ class Currency
     end
   end
 
-  def choose_code(amount) #
+  def choose_code(amount)
       if @amount[0] == '$'
         @code = 'USD'
         @amount = amount[1..-1].to_f
@@ -58,6 +52,14 @@ class Currency
         raise UnrecognizedCurrencyError, "Invalid input. Please reenter data."
     end
   end
+end
+
+class DifferentCurrencyCodeError < StandardError
+  raise DifferentCurrencyCodeError, "Different currency code: unable to process conversion."
+end
+
+class UnrecognizedCurrencyError < StandardError
+  raise UnrecognizedCurrencyCodeError, "Unrecognized currency code: unable to process conversion."
 end
 
 one_dollar = Currency.new(1, 'USD')
