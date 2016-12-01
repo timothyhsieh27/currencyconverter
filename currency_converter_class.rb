@@ -1,19 +1,13 @@
 require_relative "currency_class"
 
-class DifferentCurrencyCodeError < StandardError
-end
-
-class UnknownCurrencyCodeError < StandardError
-end
-
 class CurrencyConverter
-  attr_reader :currency_object :desired_code :new_currency
+  attr_reader :currency_object, :desired_code, :new_currency
 
   def initialize()
     @conversion_rates = {
-      'USD' => {'EUR' => 0.89, 'JPY' => 0.24}
-      'EUR' => {'USD' => 1.118, 'JPY' => 113.774}
-      'JPY' => {'USD' => 0.89, 'EUR => 0.24'}
+      'USD' => { 'EUR' => 0.89, 'JPY' => 0.24 },
+      'EUR' => { 'USD' => 1.118, 'JPY' => 113.774 },
+      'JPY' => { 'USD' => 0.89, 'EUR' => 0.24 }
     }
   end
 
@@ -26,7 +20,15 @@ class CurrencyConverter
       new_currency = Currency.new(new_amount, desired_code) #Main output of this function.
       return new_currency
     else
-      raise UnknownCurrencyCodeError, "Unkown currency code: unable to process conversion."
+      raise UnknownCurrencyCodeError, "Unknown currency code: unable to process conversion."
+    end
   end
+end
 
+class DifferentCurrencyCodeError < StandardError
+  raise DifferentCurrencyCodeError, "Different currency codes: unable to calculate."
+end
+
+class UnknownCurrencyCodeError < StandardError
+  raise UnknownCurrencyCodeError, "Unknown currency code: unable to process conversion."
 end
